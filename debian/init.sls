@@ -5,9 +5,9 @@
 debian_deb:
   pkgrepo.managed:
     - file: /etc/apt/sources.list
-    - name: deb {{ source }} {{ dist }} {{ ' '.join(comps)) }}
+    - name: deb {{ source }} {{ dist }} {{ ' '.join(comps) }}
 
 debian_deb_src:
   pkgrepo.managed:
     - file: /etc/apt/sources.list
-    - name: deb-src {{ source }} {{ dist }} {{ ' '.join(comps)) }}
+    - name: deb-src {{ source }} {{ dist }} {{ ' '.join(comps) }}
