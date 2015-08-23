@@ -1,2 +1,2 @@
 Package: *
-APT::Default-Release {{ dist }}
+APT::Default-Release "{{ dist }}"
