@@ -11,3 +11,20 @@ debian_deb_src:
   pkgrepo.managed:
     - file: /etc/apt/sources.list
     - name: deb-src {{ source }} {{ dist }} {{ ' '.join(comps) }}
+
+/etc/apt/preferences.d/release:
+  file.managed:
+    - source: salt://debian/fs/etc/apt/preferences.d/release
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
+    - context:
+        dist: {{ dist }}
+
+/etc/apt/preferences.d/nonrelease:
+  file.managed:
+    - source: salt://debian/fs/etc/apt/preferences.d/nonrelease
+    - user: root
+    - group: root
+    - mode: 644
