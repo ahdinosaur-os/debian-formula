@@ -1,10 +1,10 @@
 {% set release = salt['pillar.get']('debian:release') %}
 
-{% set defaultSource = { source: 'http://ftp.debian.org/debian/', dist: release, comps: ['main'] } %}
+{% set defaultSource = {} %}
 {% for source in salt['pillar.get']('debian:sources', [defaultSource]) %}
 
-{% set src = source.get('source') %}
-{% set dist = source.get('dist') %}
+{% set src = source.get('src', 'http://ftp.debian.org/debian') %}
+{% set dist = source.get('dist', release) %}
 {% set comps = source.get('comps', ['main']) %}
 
 debian_deb:
