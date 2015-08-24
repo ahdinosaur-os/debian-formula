@@ -13,7 +13,6 @@ debian_{{ type }}_{{ url }}_{{ distribution }}:
     - name: {{ type}} {{ url }} {{ distribution }} {{ ' '.join(components) }}
     - dist: {{ distribution }}
     - comps: {{ ','.join(components) }}
-    - consolidate: True
 
 {% endfor %}
 
