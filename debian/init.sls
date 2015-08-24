@@ -1,16 +1,23 @@
-{% set source = salt['pillar.get']('debian:source', 'http://ftp.debian.org/debian/') %}
-{% set dist = salt['pillar.get']('debian:dist', 'stable') %}
-{% set comps = salt['pillar.get']('debian:comps', ['main']) %}
+{% set release = salt['pillar.get']('debian:release') }
+
+{% set defaultSource = { source: 'http://ftp.debian.org/debian/', dist: release, comps: ['main'] } %}
+{% for source in salt['pillar.get']('debian:sources', defaultSource) %}
+
+{% set src = source.get('source') %}
+{% set dist = source.get('dist') %}
+{% set comps = source.get('comps', ['main']) %}
 
 debian_deb:
   pkgrepo.managed:
     - file: /etc/apt/sources.list
-    - name: deb {{ source }} {{ dist }} {{ ' '.join(comps) }}
+    - name: deb {{ src }} {{ dist }} {{ ' '.join(comps) }}
 
 debian_deb_src:
   pkgrepo.managed:
     - file: /etc/apt/sources.list
-    - name: deb-src {{ source }} {{ dist }} {{ ' '.join(comps) }}
+    - name: deb-src {{ src }} {{ dist }} {{ ' '.join(comps) }}
+
+{% endfor %}
 
 /etc/apt/preferences.d/release:
   file.managed:
@@ -20,7 +27,7 @@ debian_deb_src:
     - mode: 644
     - template: jinja
     - context:
-        dist: {{ dist }}
+        dist: {{ release }}
 
 /etc/apt/preferences.d/nonrelease:
   file.managed:

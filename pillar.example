@@ -1,3 +1,8 @@
-source: http://ftp.en.debian.org/debian/
-dist: testing
-comps: ['main', 'contrib', 'non-free']
+release: 'testing'
+sources:
+  - source: http://ftp.en.debian.org/debian/
+    dist: testing
+    comps: ['main', 'contrib', 'non-free']
+  - source: http://ftp.en.debian.org/debian
+    dist: unstable
+    comps: ['main', 'contrib', 'non-free']
