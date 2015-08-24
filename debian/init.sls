@@ -5,7 +5,7 @@
 {% set type = source.get('type', 'deb') %}
 {% set url = source.get('url', 'http://ftp.debian.org/debian') %}
 {% set dist = source.get('distribution', release) %}
-{% set comps = source.get('components', ['main']) %}
+{% set components = source.get('components', ['main']) %}
 
 debian_{{ type }}_{{ url }}_{{ distribution }}:
   pkgrepo.managed:
