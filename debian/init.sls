@@ -1,21 +1,16 @@
 {% set release = salt['pillar.get']('debian:release') %}
 
-{% set defaultSource = {} %}
-{% for source in salt['pillar.get']('debian:sources', [defaultSource]) %}
+{% for source in salt['pillar.get']('debian:sources', [{}]) %}
 
-{% set src = source.get('src', 'http://ftp.debian.org/debian') %}
-{% set dist = source.get('dist', release) %}
-{% set comps = source.get('comps', ['main']) %}
+{% set type = source.get('type', 'deb') %}
+{% set url = source.get('url', 'http://ftp.debian.org/debian') %}
+{% set dist = source.get('distribution', release) %}
+{% set comps = source.get('components', ['main']) %}
 
-debian_deb:
+debian_{{ type }}_{{ url }}_{{ distribution }}:
   pkgrepo.managed:
-    - file: /etc/apt/sources.list
-    - name: deb {{ src }} {{ dist }} {{ ' '.join(comps) }}
-
-debian_deb_src:
-  pkgrepo.managed:
-    - file: /etc/apt/sources.list
-    - name: deb-src {{ src }} {{ dist }} {{ ' '.join(comps) }}
+    - file: /etc/apt/sources.list.d/debian
+    - name: {{ type}} {{ url }} {{ distribution }} {{ ' '.join(components) }}
 
 {% endfor %}
 
