@@ -9,8 +9,11 @@
 
 debian_{{ type }}_{{ url }}_{{ distribution }}:
   pkgrepo.managed:
-    - file: /etc/apt/sources.list.d/debian
+    - file: /etc/apt/sources.list.d/debian.list
     - name: {{ type}} {{ url }} {{ distribution }} {{ ' '.join(components) }}
+    - dist: {{ distribution }}
+    - comps: {{ ','.join(components) }}
+    - consolidate: True
 
 {% endfor %}
 
