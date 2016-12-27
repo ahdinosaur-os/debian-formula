@@ -16,19 +16,31 @@ debian_{{ type }}_{{ url }}_{{ distribution }}:
 
 {% endfor %}
 
-/etc/apt/preferences.d/release:
+{% for pin in salt['pillar.get']('debian:pins', [{}]) %}
+
+{% set name = pin.get('name') %}
+{% set value = pin.get('value') %}
+{% set priority = pin.get('priority') %}
+
+/etc/apt/preferences.d/{{ name }}
   file.managed:
-    - source: salt://debian/fs/etc/apt/preferences.d/release
+    - source: salt://debian/fs/etc/apt/preferences.d/pin
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
+    - context:
+        pin: {{ value }}
+        priority: {{ priority }}
+
+{% endfor %}
+
+/etc/apt/apt.conf.d/10defaultrelease:
+  file.managed:
+    - source: salt://debian/fs/etc/apt/apt.conf.d/10defaultrelease
     - user: root
     - group: root
     - mode: 644
     - template: jinja
     - context:
         dist: {{ release }}
-
-/etc/apt/preferences.d/nonrelease:
-  file.managed:
-    - source: salt://debian/fs/etc/apt/preferences.d/nonrelease
-    - user: root
-    - group: root
-    - mode: 644
